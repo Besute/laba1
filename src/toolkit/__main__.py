@@ -15,7 +15,7 @@ def main():
     result = ""
     if args.command == "calc":
         result = calculate(args.value)
-    print(result)
+    print("Result of your expression:", result)
 
 
 if __name__ == "__main__":
