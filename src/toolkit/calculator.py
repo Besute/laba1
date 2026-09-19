@@ -1,13 +1,16 @@
-OPERANDS = "+-*/()"
+OPERANDS = "+-*/()!?"
+HAHAHA_CONST = 998244353
+
+# "!" - IS UNAR MINUS (-5), "?" - IS UNAR PLUS (+5)
 
 def get_operation_priority(op):
-    if op == "+" or op == "-":
+    if op == "+" or op == "-" or op == "!" or op == "?":
         return 1
     elif op == "*" or op == "/":
         return 2
     elif op == "(":
         return 3
-    return None
+    return -1
 
 def make_operation(first, second, op):
     if op == "*":
@@ -18,7 +21,14 @@ def make_operation(first, second, op):
         return first - second
     elif op == "+":
         return first + second
-    return None
+    return HAHAHA_CONST
+
+def make_unar(first, op):
+    if op == "!":
+        return -1 * first
+    if op == "?":
+        return first
+    return HAHAHA_CONST
 
 def is_oper(symb):
     return symb in OPERANDS
@@ -36,21 +46,14 @@ def separate_nums_from_opers(expression):
             was_operand = True
             i += 1
         elif was_operand and is_oper(expression[i]):
-            curr_num = ""
-            if expression[i] in "+-":
-                curr_num = expression[i]
+            if expression[i] in "-":
+                final_expr.append("!")
+            elif expression[i] in "+":
+                final_expr.append("?")
             else:
                 #TODO: Make error raise from errors.py file
                 raise SyntaxError("YOU HAVE ERROR IN OPERANDS QUEUE")
             i += 1
-            while i < len(expression) and not (is_oper(expression[i])):
-                if expression[i] == " ":
-                    i += 1
-                    continue
-                curr_num += expression[i]
-                i += 1
-            was_operand = False
-            final_expr.append(curr_num)
         else:
             curr_num = ""
             while i < len(expression) and not(is_oper(expression[i])) and expression[i] != " ":
@@ -64,7 +67,7 @@ def make_expression_queue(expression):
     queue = ["("]
     final_expr = []
     for i in range(len(expression)):
-        if expression[i] == "(":
+        if expression[i] in "(":
             queue.append("(")
         elif is_oper(expression[i]) and expression[i] not in ")":
             while get_operation_priority(queue[-1]) <= get_operation_priority(expression[i]):
@@ -84,11 +87,16 @@ def make_expression_queue(expression):
 def execute(expr):
     stack = []
     for i in range(len(expr)):
-        if is_oper(expr[i]):
+        if expr[i] in "?!":
+            op = expr[i]
+            first = stack.pop()
+            res = str(make_unar(int(first), op))
+            stack.append(res)
+        elif is_oper(expr[i]):
             second = stack.pop()
             first = stack.pop()
             res = make_operation(int(first), int(second), expr[i])
-            stack.append(res)
+            stack.append(str(res))
         else:
             stack.append(expr[i])
     print(f"STACK IS: {stack}")
@@ -97,8 +105,6 @@ def execute(expr):
 
 def calculate(expression):
     expr = separate_nums_from_opers(expression)
-    print(expr)
     expr = make_expression_queue(expr)
-    print(expr)
     res = execute(expr)
     return res
