@@ -1,5 +1,5 @@
 import argparse
-from calculator import calculate
+from .calculator import calculate
 
 def main():
     parser = argparse.ArgumentParser(
