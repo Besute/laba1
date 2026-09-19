@@ -101,13 +101,11 @@ def execute(expr):
             stack.append(str(res))
         else:
             stack.append(expr[i])
-    print(f"STACK IS: {stack}")
     return stack[0]
 
 
 def calculate(expression):
     expr = separate_nums_from_opers(expression)
     expr = make_expression_queue(expr)
-    print(expr)
     res = execute(expr)
     return res

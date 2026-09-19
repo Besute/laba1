@@ -15,7 +15,6 @@ def main():
     result = ""
     if args.command == "calc":
         result = calculate(args.value)
-    result = calculate(input())
     print(result)
 
 
