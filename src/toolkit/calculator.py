@@ -4,7 +4,9 @@ HAHAHA_CONST = 998244353
 # "!" - IS UNAR MINUS (-5), "?" - IS UNAR PLUS (+5)
 
 def get_operation_priority(op):
-    if op == "+" or op == "-" or op == "!" or op == "?":
+    if op == "!" or op == "?":
+        return 0
+    elif op == "+" or op == "-" or op == "!" or op == "?":
         return 1
     elif op == "*" or op == "/":
         return 2
@@ -106,5 +108,6 @@ def execute(expr):
 def calculate(expression):
     expr = separate_nums_from_opers(expression)
     expr = make_expression_queue(expr)
+    print(expr)
     res = execute(expr)
     return res
