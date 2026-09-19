@@ -38,7 +38,7 @@ def is_oper(symb):
 def separate_nums_from_opers(expression):
     final_expr = []
     i = 0
-    was_operand = False
+    was_operand = True
     while i < len(expression):
         if expression[i] == " ":
             i += 1
@@ -92,12 +92,12 @@ def execute(expr):
         if expr[i] in "?!":
             op = expr[i]
             first = stack.pop()
-            res = str(make_unar(int(first), op))
+            res = str(make_unar(float(first), op))
             stack.append(res)
         elif is_oper(expr[i]):
             second = stack.pop()
             first = stack.pop()
-            res = make_operation(int(first), int(second), expr[i])
+            res = make_operation(float(first), float(second), expr[i])
             stack.append(str(res))
         else:
             stack.append(expr[i])
