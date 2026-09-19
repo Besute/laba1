@@ -6,10 +6,10 @@ LENGTH_TO_M = {
 }
 
 M_TO_LENGTH = {
-    "km": 0.001,
-    "m": 1,
-    "cm": 100,
-    "mm": 1000
+        "km": 0.001,
+        "m": 1,
+        "cm": 100,
+        "mm": 1000
 }
 
 MASS_TO_G = {
@@ -66,8 +66,10 @@ def evaluate_from(val, from_, to_):
         total_temp = execute_temper(float(val), from_, to_)
         total_zero = execute_temper(0, "k", to_)
         if (total_zero > total_temp):
+            # TODO: Make error raise from errors.py file
             raise ValueError("YOUR TEMPERATURE IS BELOW ABSOLUTE ZERO")
         return total_temp
+    # TODO: Make error raise from errors.py file
     raise SyntaxError(f"INCORRECT MEASURE: CAN'T CONVER FROM {from_} to {to_}")
 
 def convert(val, from_, to_):
