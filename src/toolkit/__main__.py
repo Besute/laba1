@@ -1,5 +1,6 @@
 import argparse
 from .calculator import calculate
+from .converter import convert
 
 def main():
     parser = argparse.ArgumentParser(
@@ -20,9 +21,10 @@ def main():
     result = ""
     if args.command == "calc":
         result = calculate(args.value)
+        print("Result of your expression:", result)
     elif args.command == "convert":
-        print(args.value, args.from_unit, args.to_unit)
-    print("Result of your expression:", result)
+        result = convert(args.value, args.from_unit, args.to_unit)
+        print(f"The {args.value}{args.from_unit} is {result}{args.to_unit}")
 
 
 if __name__ == "__main__":
