@@ -1,0 +1,24 @@
+[project]
+name = "Python-calculator"
+version = "0.1.0"
+description = "Calculator and converter written on python"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "Борис Бутко", email = "boris200723@gmail.com" }
+]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests/",
+]
+
+[tool.poetry]
+package-mode = false
+
+[dependency-groups]
+dev = [
+    "black==26.5.1",
+    "isort==5.13.2"
+]
