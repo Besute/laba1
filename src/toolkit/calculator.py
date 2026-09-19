@@ -7,7 +7,18 @@ def get_operation_priority(op):
         return 2
     elif op == "(":
         return 3
-    return -1
+    return None
+
+def make_operation(first, second, op):
+    if op == "*":
+        return first * second
+    elif op == "/":
+        return first / second
+    elif op == "-":
+        return first - second
+    elif op == "+":
+        return first + second
+    return None
 
 def is_oper(symb):
     return symb in OPERANDS
@@ -29,6 +40,7 @@ def separate_nums_from_opers(expression):
             if expression[i] in "+-":
                 curr_num = expression[i]
             else:
+                #TODO: Make error raise from errors.py file
                 raise SyntaxError("YOU HAVE ERROR IN OPERANDS QUEUE")
             i += 1
             while i < len(expression) and not (is_oper(expression[i])):
@@ -52,7 +64,9 @@ def make_expression_queue(expression):
     queue = ["("]
     final_expr = []
     for i in range(len(expression)):
-        if is_oper(expression[i]) and expression[i] not in ")":
+        if expression[i] == "(":
+            queue.append("(")
+        elif is_oper(expression[i]) and expression[i] not in ")":
             while get_operation_priority(queue[-1]) <= get_operation_priority(expression[i]):
                 final_expr.append(queue.pop())
             queue.append(expression[i])
@@ -67,10 +81,24 @@ def make_expression_queue(expression):
     queue.pop()
     return final_expr
 
+def execute(expr):
+    stack = []
+    for i in range(len(expr)):
+        if is_oper(expr[i]):
+            second = stack.pop()
+            first = stack.pop()
+            res = make_operation(int(first), int(second), expr[i])
+            stack.append(res)
+        else:
+            stack.append(expr[i])
+    print(f"STACK IS: {stack}")
+    return stack[0]
 
 
 def calculate(expression):
     expr = separate_nums_from_opers(expression)
     print(expr)
-    # # expr = make_expression_queue(expression)
-    # print(expr)
+    expr = make_expression_queue(expr)
+    print(expr)
+    res = execute(expr)
+    return res
