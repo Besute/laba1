@@ -1,26 +1,14 @@
-LENGTH_TO_M = {
-    "km": 1000,
-    "m": 1,
-    "cm": 0.01,
-    "mm": 0.001
-}
+import json
+from pathlib import Path
 
-M_TO_LENGTH = {
-        "km": 0.001,
-        "m": 1,
-        "cm": 100,
-        "mm": 1000
-}
+JSON_FILE = Path(__file__).parent / "converts.json"
+LENGTH_TO_M = {}
 
-MASS_TO_G = {
-    "g": 1,
-    "kg": 1000
-}
+def load_conversions():
+    with open(JSON_FILE, "r") as file:
+        return json.load(file)
 
-G_TO_MASS = {
-    "g": 1,
-    "kg": 0.001
-}
+convers =  load_conversions()
 
 def faren_to_c(faren):
     return (faren - 32) * 5/9
@@ -35,27 +23,19 @@ def c_to_faren(c):
     return c * 9/5 + 32
 
 def execute_length(val, from_, to_):
-    val_in_m = LENGTH_TO_M[from_] * val
-    val_ans = M_TO_LENGTH[to_] * val_in_m
-    return val_ans
+    convert_to_m = convers[from_]["m"] * val
+    convert_to_goal = convers["m"][to_] * convert_to_m
+    return convert_to_goal
 
 def execute_mass(val, from_, to_):
-    val_in_g = MASS_TO_G[from_] * val
-    val_ans = G_TO_MASS[to_] * val_in_g
-    return val_ans
+    convert_to_g = convers[from_]["g"] * val
+    convert_to_goal = convers["g"][to_] * convert_to_g
+    return convert_to_goal
 
 def execute_temper(val, from_, to_):
-    val_in_c = val
-    if from_ == "f":
-        val_in_c = faren_to_c(val)
-    elif from_ == "k":
-        val_in_c = kel_to_c(val)
-    val_ans = val_in_c
-    if to_ == "f":
-        val_ans = c_to_faren(val_ans)
-    elif to_ == "k":
-        val_ans = c_to_kel(val_ans)
-    return val_ans
+    convert_to_c = convers[from_]["c"]["mult"] * val + convers[from_]["c"]["offset"]
+    convert_to_goal = convers["c"][to_]["mult"] * convert_to_c + convers["c"][to_]["offset"]
+    return convert_to_goal
 
 def evaluate_from(val, from_, to_):
     if from_ in ["km", "m", "cm", "mm"]:
@@ -65,7 +45,7 @@ def evaluate_from(val, from_, to_):
     elif from_ in ["c", "f", "k"]:
         total_temp = execute_temper(float(val), from_, to_)
         total_zero = execute_temper(0, "k", to_)
-        if (total_zero > total_temp):
+        if total_zero > total_temp:
             # TODO: Make error raise from errors.py file
             raise ValueError("YOUR TEMPERATURE IS BELOW ABSOLUTE ZERO")
         return total_temp
