@@ -1,3 +1,5 @@
+from .errors import InvalidExpressionError, DivisionByZeroError
+
 OPERANDS = "+-*/()!?"
 HAHAHA_CONST = 998244353
 
@@ -19,8 +21,7 @@ def make_operation(first, second, op):
         return first * second
     elif op == "/":
         if second == 0:
-            # TODO: Make error raise from errors.py file
-            raise ZeroDivisionError("DIVISION BY ZERO")
+            raise DivisionByZeroError("You devised by zero")
         return first / second
     elif op == "-":
         return first - second
@@ -58,8 +59,7 @@ def separate_nums_from_opers(expression):
             elif expression[i] in "+":
                 final_expr.append("?")
             else:
-                # TODO: Make error raise from errors.py file
-                raise SyntaxError("YOU HAVE ERROR IN OPERANDS QUEUE")
+                raise InvalidExpressionError("You have a trouble in operands queue")
             i += 1
         else:
             curr_num = ""
@@ -86,9 +86,15 @@ def make_expression_queue(expression):
             queue.pop()
         else:
             final_expr.append(expression[i])
+    if len(queue) == 0:
+        raise InvalidExpressionError("You have a trouble in expression queue")
     while queue[-1] != "(":
         final_expr.append(queue.pop())
+        if len(queue) == 0:
+            raise InvalidExpressionError("You have a trouble in expression queue")
     queue.pop()
+    if len(queue) != 0:
+        raise InvalidExpressionError("You have an trouble in your expression")
     return final_expr
 
 def execute(expr):
@@ -101,8 +107,7 @@ def execute(expr):
             stack.append(res)
         elif is_oper(expr[i]):
             if len(stack) < 2:
-                # TODO: Make error raise from errors.py file
-                raise SyntaxError("YOU HAVE MISTAKE IN YOUR EXPRESSION")
+                raise InvalidExpressionError("Probably you have error in your expression")
             second = stack.pop()
             first = stack.pop()
             res = make_operation(float(first), float(second), expr[i])
@@ -115,6 +120,5 @@ def execute(expr):
 def calculate(expression):
     expr = separate_nums_from_opers(expression)
     expr = make_expression_queue(expr)
-    print(expr)
     res = execute(expr)
     return float(res)

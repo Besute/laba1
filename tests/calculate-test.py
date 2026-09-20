@@ -1,4 +1,6 @@
 import pytest
+from toolkit.errors import InvalidExpressionError, InvalidValueError, DivisionByZeroError
+import toolkit
 from toolkit.calculator import calculate
 
 def test_1():
@@ -26,9 +28,21 @@ def test_8():
     assert calculate("5 / 2 * 2") == 5.0
 
 def test_9():
-    with pytest.raises(SyntaxError):
+    with pytest.raises(InvalidExpressionError):
         calculate("2 +")
 
 def test_10():
-    with pytest.raises(ZeroDivisionError):
+    with pytest.raises(DivisionByZeroError):
         calculate("5 * 11 - (2 + 3) / (5 - 5) * (101 -- 110111)")
+
+def test_11():
+    with pytest.raises(InvalidExpressionError):
+        calculate("(5) - (5) *")
+
+def test_12():
+    with pytest.raises(InvalidExpressionError):
+        calculate("((5 - 4)")
+
+def test_13():
+    with pytest.raises(InvalidExpressionError):
+        calculate("(5 - 4))")

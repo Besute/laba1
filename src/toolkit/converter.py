@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from .errors import InvalidValueError
 
 JSON_FILE = Path(__file__).parent / "converts.json"
 LENGTH_TO_M = {}
@@ -46,11 +47,9 @@ def evaluate_from(val, from_, to_):
         total_temp = execute_temper(float(val), from_, to_)
         total_zero = execute_temper(0, "k", to_)
         if total_zero > total_temp:
-            # TODO: Make error raise from errors.py file
-            raise ValueError("YOUR TEMPERATURE IS BELOW ABSOLUTE ZERO")
+            raise InvalidValueError("You have temperature below absolute zero")
         return total_temp
-    # TODO: Make error raise from errors.py file
-    raise SyntaxError(f"INCORRECT MEASURE: CAN'T CONVER FROM {from_} to {to_}")
+    raise InvalidValueError(f"You can't convert {from_} to {to_}")
 
 def convert(val, from_, to_):
     return evaluate_from(val, from_, to_)

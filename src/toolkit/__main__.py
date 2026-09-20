@@ -1,6 +1,7 @@
 import argparse
 from .calculator import calculate
 from .converter import convert
+from .errors import InvalidExpressionError, InvalidValueError, DivisionByZeroError
 
 def main():
     parser = argparse.ArgumentParser(
@@ -19,12 +20,22 @@ def main():
 
     args = parser.parse_args()
     result = ""
-    if args.command == "calc":
-        result = calculate(args.value)
-        print("Result of your expression:", result)
-    elif args.command == "convert":
-        result = convert(args.value, args.from_unit, args.to_unit)
-        print(f"The {args.value}{args.from_unit} is {result}{args.to_unit}")
+    try:
+        if args.command == "calc":
+            result = calculate(args.value)
+            print("Result of your expression:", result)
+        elif args.command == "convert":
+            result = convert(args.value, args.from_unit, args.to_unit)
+            print(f"The {args.value}{args.from_unit} is {result}{args.to_unit}")
+
+    except InvalidExpressionError as error:
+        print(f"Error: {error}")
+
+    except InvalidValueError as error:
+        print(f"Error: {error}")
+
+    except DivisionByZeroError as error:
+        print(f"Error: {error}")
 
 
 if __name__ == "__main__":
