@@ -4,13 +4,13 @@ HAHAHA_CONST = 998244353
 # "!" - IS UNAR MINUS (-5), "?" - IS UNAR PLUS (+5)
 
 def get_operation_priority(op):
-    if op == "!" or op == "?":
+    if op == "(":
         return 0
     elif op == "+" or op == "-" or op == "!" or op == "?":
         return 1
     elif op == "*" or op == "/":
         return 2
-    elif op == "(":
+    elif op == "!" or op == "?":
         return 3
     return -1
 
@@ -18,6 +18,9 @@ def make_operation(first, second, op):
     if op == "*":
         return first * second
     elif op == "/":
+        if second == 0:
+            # TODO: Make error raise from errors.py file
+            raise ZeroDivisionError("DIVISION BY ZERO")
         return first / second
     elif op == "-":
         return first - second
@@ -46,6 +49,8 @@ def separate_nums_from_opers(expression):
         elif (is_oper(expression[i]) and not(was_operand)) or expression[i] in "()":
             final_expr.append(expression[i])
             was_operand = True
+            if expression[i] in ")":
+                was_operand = False
             i += 1
         elif was_operand and is_oper(expression[i]):
             if expression[i] in "-":
@@ -53,7 +58,7 @@ def separate_nums_from_opers(expression):
             elif expression[i] in "+":
                 final_expr.append("?")
             else:
-                #TODO: Make error raise from errors.py file
+                # TODO: Make error raise from errors.py file
                 raise SyntaxError("YOU HAVE ERROR IN OPERANDS QUEUE")
             i += 1
         else:
@@ -72,7 +77,7 @@ def make_expression_queue(expression):
         if expression[i] in "(":
             queue.append("(")
         elif is_oper(expression[i]) and expression[i] not in ")":
-            while get_operation_priority(queue[-1]) <= get_operation_priority(expression[i]):
+            while get_operation_priority(queue[-1]) >= get_operation_priority(expression[i]):
                 final_expr.append(queue.pop())
             queue.append(expression[i])
         elif expression[i] in ")":
@@ -95,6 +100,9 @@ def execute(expr):
             res = str(make_unar(float(first), op))
             stack.append(res)
         elif is_oper(expr[i]):
+            if len(stack) < 2:
+                # TODO: Make error raise from errors.py file
+                raise SyntaxError("YOU HAVE MISTAKE IN YOUR EXPRESSION")
             second = stack.pop()
             first = stack.pop()
             res = make_operation(float(first), float(second), expr[i])
@@ -107,5 +115,6 @@ def execute(expr):
 def calculate(expression):
     expr = separate_nums_from_opers(expression)
     expr = make_expression_queue(expr)
+    print(expr)
     res = execute(expr)
-    return res
+    return float(res)
