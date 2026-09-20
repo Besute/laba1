@@ -20,5 +20,6 @@ package-mode = false
 [dependency-groups]
 dev = [
     "black==26.5.1",
-    "isort==5.13.2"
+    "isort==5.13.2",
+    "pytest (>=9.1.1,<10.0.0)"
 ]
