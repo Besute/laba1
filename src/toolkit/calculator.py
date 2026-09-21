@@ -1,6 +1,19 @@
-from .errors import InvalidExpressionError, DivisionByZeroError
+import decimal
+from .errors import InvalidExpressionError, DivisionByZeroError, InvalidValueError
+from decimal import *
+import json
+from pathlib import Path
 
-OPERANDS = "+-*/()!?"
+JSON_FILE = Path(__file__).parent / "calculator-config.json"
+
+def load_json():
+    with open(JSON_FILE, "r") as file:
+        return json.load(file)
+
+CALC_CONFIG = load_json()
+PRECISION = CALC_CONFIG["precision"]
+
+OPERANDS = "+-*/()!?№%"
 HAHAHA_CONST = 998244353
 
 # "!" - IS UNAR MINUS (-5), "?" - IS UNAR PLUS (+5)
@@ -10,11 +23,14 @@ def get_operation_priority(op):
         return 0
     elif op == "+" or op == "-":
         return 1
-    elif op == "*" or op == "/":
+    elif op == "*" or op == "/" or op == "%" or op == "№":
         return 2
     elif op == "!" or op == "?":
         return 3
     return -1
+
+def is_int(num):
+    return int(num) == num
 
 def make_operation(first, second, op):
     if op == "*":
@@ -27,6 +43,22 @@ def make_operation(first, second, op):
         return first - second
     elif op == "+":
         return first + second
+    elif op == "%":
+        if second == 0:
+            raise DivisionByZeroError("You devised by zero")
+        return abs(first) % abs(second)
+    elif op == "№":
+        if second == 0:
+            raise DivisionByZeroError("You devised by zero")
+        if is_int(first) and is_int(second):
+            minus = 1
+            if first < 0:
+                minus = minus * -1
+            if second < 0:
+                minus = minus * -1
+            return abs(first) // abs(second) * minus
+        else:
+            raise InvalidValueError("You can't divide evenly float number ")
     return HAHAHA_CONST
 
 def make_unar(first, op):
@@ -103,14 +135,14 @@ def execute(expr):
         if expr[i] in "?!":
             op = expr[i]
             first = stack.pop()
-            res = str(make_unar(float(first), op))
+            res = str(make_unar(decimal.Decimal(first), op))
             stack.append(res)
         elif is_oper(expr[i]):
             if len(stack) < 2:
                 raise InvalidExpressionError("Probably you have error in your expression")
             second = stack.pop()
             first = stack.pop()
-            res = make_operation(float(first), float(second), expr[i])
+            res = make_operation(decimal.Decimal(first), decimal.Decimal(second), expr[i])
             stack.append(str(res))
         else:
             stack.append(expr[i])
@@ -118,7 +150,8 @@ def execute(expr):
 
 
 def calculate(expression):
-    expr = separate_nums_from_opers(expression.replace(",", "."))
+    getcontext().prec = PRECISION
+    expr = separate_nums_from_opers(expression.replace(",", ".").replace("//", "№"))
     expr = make_expression_queue(expr)
     res = execute(expr)
-    return float(res)
+    return decimal.Decimal(res)
