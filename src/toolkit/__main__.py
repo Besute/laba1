@@ -2,10 +2,11 @@ import argparse
 from .calculator import calculate
 from .converter import convert
 from pathlib import Path
-from auxiliary_functions import save_data
+from .auxiliary_functions import save_data, save_history
 from .errors import InvalidExpressionError, InvalidValueError, DivisionByZeroError
 
 JSON_FILE = Path(__file__).parent / "calculator_config.json"
+JSON_FILE_HISTORY = Path(__file__).parent / "history.json"
 
 def build_parser():
     parser = argparse.ArgumentParser(
@@ -34,12 +35,28 @@ def main():
     try:
         if args.command == "calc":
             result = calculate(args.value)
+            save_history({
+                "operation": "calculation",
+                "result": str(result),
+                "expression": args.value,
+            }, JSON_FILE_HISTORY)
             print("Result of your expression:", result)
         elif args.command == "convert":
             result = convert(args.value, args.from_unit, args.to_unit)
+            save_history({
+                "operation": "convertion",
+                "result": str(result),
+                "value": args.value,
+                "from": args.from_unit,
+                "to": args.to_unit
+            }, JSON_FILE_HISTORY)
             print(f"The {args.value}{args.from_unit} is {result}{args.to_unit}")
         elif args.command == "setprecision":
             print(f"You set your current precision to {args.value}")
+            save_history({
+                "operation": "setprecision",
+                "to": args.value,
+            }, JSON_FILE_HISTORY)
             save_data({
                 "precision": args.value,
             }, JSON_FILE)

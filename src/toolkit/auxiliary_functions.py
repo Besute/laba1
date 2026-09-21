@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 OPERANDS = "+-*/()!?№%" # "!" - IS UNAR MINUS (-5), "?" - IS UNAR PLUS (+5)
 REAL_OPERANDS = "+-*/()%"
@@ -16,3 +17,19 @@ def is_int(num):
 
 def is_oper(symb):
     return symb in OPERANDS
+
+
+def load_data(path):
+    with open(path, "r") as file:
+        return json.load(file)
+
+def save_history(data, path):
+    current_data = []
+    if path.is_file():
+        current_data = load_data(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    current_data.append(data)
+    path.write_text(
+        json.dumps(current_data[::-1], indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
