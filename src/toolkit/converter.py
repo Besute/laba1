@@ -2,7 +2,6 @@ import decimal
 import json
 from pathlib import Path
 from .errors import InvalidValueError
-from decimal import *
 
 JSON_FILE = Path(__file__).parent / "converts.json"
 LENGTH_TO_M = {}

@@ -1,7 +1,6 @@
 import argparse
 from .calculator import calculate
 from .converter import convert
-import json
 from pathlib import Path
 from auxiliary_functions import save_data
 from .errors import InvalidExpressionError, InvalidValueError, DivisionByZeroError
