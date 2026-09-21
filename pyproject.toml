@@ -15,7 +15,7 @@ testpaths = [
 ]
 
 [tool.poetry]
-package-mode = false
+packages = [{ include = "toolkit", from = "src" }]
 
 [dependency-groups]
 dev = [

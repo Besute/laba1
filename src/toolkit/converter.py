@@ -24,13 +24,13 @@ def c_to_faren(c):
     return c * 9/5 + 32
 
 def execute_length(val, from_, to_):
-    convert_to_m = convers[from_]["m"] * val
-    convert_to_goal = convers["m"][to_] * convert_to_m
+    convert_to_m = convers["length_to_m"][from_] * val
+    convert_to_goal = convers["m_to_length"][to_] * convert_to_m
     return convert_to_goal
 
 def execute_mass(val, from_, to_):
-    convert_to_g = convers[from_]["g"] * val
-    convert_to_goal = convers["g"][to_] * convert_to_g
+    convert_to_g = convers["mass_to_g"][from_] * val
+    convert_to_goal = convers["g_to_mass"][to_] * convert_to_g
     return convert_to_goal
 
 def execute_temper(val, from_, to_):
@@ -39,11 +39,15 @@ def execute_temper(val, from_, to_):
     return convert_to_goal
 
 def evaluate_from(val, from_, to_):
-    if from_ in ["km", "m", "cm", "mm"]:
+    if from_ in ["km", "m", "cm", "mm"] and to_ in ["km", "m", "cm", "mm"]:
+        if float(val) < 0:
+            raise InvalidValueError("Length can't be negative")
         return execute_length(float(val), from_, to_)
-    elif from_ in ["g", "kg"]:
+    elif from_ in ["g", "kg"] and to_ in ["kg", "g"]:
+        if float(val) < 0:
+            raise InvalidValueError("Mass can't be negative")
         return execute_mass(float(val), from_, to_)
-    elif from_ in ["c", "f", "k"]:
+    elif from_ in ["c", "f", "k"] and to_ in ["c", "f", "k"]:
         total_temp = execute_temper(float(val), from_, to_)
         total_zero = execute_temper(0, "k", to_)
         if total_zero > total_temp:
