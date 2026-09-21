@@ -19,7 +19,7 @@ def build_parser():
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     calc_parser = subparsers.add_parser("calc", help="calculates given expression")
-    calc_parser.add_argument("value", help="expression")
+    calc_parser.add_argument("value", help="expression", type=str)
 
     convert_parser = subparsers.add_parser("convert", help="convert one measure to another")
     convert_parser.add_argument("value", help="your initial value of 'from' unit")
@@ -43,7 +43,7 @@ def main():
             result = convert(args.value, args.from_unit, args.to_unit)
             print(f"The {args.value}{args.from_unit} is {result}{args.to_unit}")
         elif args.command == "setprecision":
-            print(args.value)
+            print(f"You set your current precision to {args.value}")
             save_data({
                 "precision": args.value,
             }, JSON_FILE)

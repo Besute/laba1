@@ -1,5 +1,3 @@
-import decimal
-
 import pytest
 from toolkit.errors import InvalidExpressionError, DivisionByZeroError, InvalidValueError
 from toolkit.calculator import calculate
@@ -125,3 +123,26 @@ def test_35():
 
 def test_36():
     assert calculate("1----5") == Decimal("6")
+
+def test_37():
+    with pytest.raises(InvalidExpressionError):
+        calculate("($#")
+
+def test_38():
+    with pytest.raises(InvalidExpressionError):
+        calculate("12 + 7b")
+
+def test_39():
+    with pytest.raises(InvalidExpressionError):
+        calculate("++++---")
+
+def test_40():
+    with pytest.raises(InvalidExpressionError):
+        calculate("(())")
+
+def test_41():
+    with pytest.raises(InvalidExpressionError):
+        calculate("5 ** 4")
+
+def test_42():
+    assert calculate("123 / 7") == Decimal("123") / Decimal("7")

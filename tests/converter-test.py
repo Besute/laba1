@@ -1,29 +1,30 @@
 import pytest
 from toolkit.errors import InvalidValueError
 from toolkit.converter import convert
+from decimal import *
 
 def test_1():
-    assert convert("1000", "g", "kg") == 1.0
+    assert convert("1000", "g", "kg") == Decimal(1)
 
 def test_2():
     with pytest.raises(InvalidValueError):
         convert("1000", "m", "kg")
 
 def test_3():
-    assert convert("1500", "g", "kg") == 1.5
+    assert convert("1500", "g", "kg") == Decimal(1.5)
 
 def test_4():
-    assert convert("3.5555", "kg", "g") == 3555.5
+    assert convert("3.5555", "kg", "g") == Decimal(3555.5)
 
 def test_5():
     with pytest.raises(InvalidValueError):
         convert(-280, "c", "f")
 
 def test_6():
-    assert convert(0, "c", "k") == 273.15
+    assert convert(0, "c", "k") == Decimal(273.15)
 
 def test_7():
-    assert convert(100, "cm", "m") == 1.0
+    assert convert(100, "cm", "m") == Decimal(1)
 
 def test_8():
     with pytest.raises(InvalidValueError):
@@ -34,7 +35,26 @@ def test_9():
         convert(-50, "kg", "g")
 
 def test_10():
-    assert  convert(567, "f", "c") == 297.22222222222223
+    assert  convert(567, "f", "c") == Decimal(297.22222222222223)
 
 def test_11():
-    assert convert(297.22222222222223, "c", "f") == 567
+    assert convert(297.22222222222223, "c", "f") == Decimal(567)
+
+def test_12():
+    with pytest.raises(InvalidValueError):
+        convert(0, "c", "i")
+
+def test_13():
+    with pytest.raises(InvalidValueError):
+        convert(0, "g", "c")
+
+def test_14():
+    with pytest.raises(InvalidValueError):
+        convert(0, "u", "kg")
+
+def test_15():
+    with pytest.raises(InvalidValueError):
+        convert(-4, "m", "cm")
+
+def test_16():
+    assert convert(1000, "m", "km") == Decimal(1)

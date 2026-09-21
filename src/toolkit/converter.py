@@ -1,6 +1,8 @@
+import decimal
 import json
 from pathlib import Path
 from .errors import InvalidValueError
+from decimal import *
 
 JSON_FILE = Path(__file__).parent / "converts.json"
 LENGTH_TO_M = {}
@@ -30,17 +32,17 @@ def evaluate_from(val, from_, to_):
     if from_ in ["km", "m", "cm", "mm"] and to_ in ["km", "m", "cm", "mm"]:
         if float(val) < 0:
             raise InvalidValueError("Length can't be negative")
-        return execute_length(float(val), from_, to_)
+        return decimal.Decimal(execute_length(float(val), from_, to_))
     elif from_ in ["g", "kg"] and to_ in ["kg", "g"]:
         if float(val) < 0:
             raise InvalidValueError("Mass can't be negative")
-        return execute_mass(float(val), from_, to_)
+        return decimal.Decimal(execute_mass(float(val), from_, to_))
     elif from_ in ["c", "f", "k"] and to_ in ["c", "f", "k"]:
-        total_temp = execute_temper(float(val), from_, to_)
+        total_temp = execute_temper(val, from_, to_)
         total_zero = execute_temper(0, "k", to_)
         if total_zero > total_temp:
             raise InvalidValueError("You have temperature below absolute zero")
-        return total_temp
+        return decimal.Decimal(total_temp)
     raise InvalidValueError(f"You can't convert {from_} to {to_}")
 
 def convert(val, from_, to_):
