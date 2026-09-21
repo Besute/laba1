@@ -11,18 +11,6 @@ def load_conversions():
 
 convers =  load_conversions()
 
-def faren_to_c(faren):
-    return (faren - 32) * 5/9
-
-def kel_to_c(k):
-    return k - 273.15
-
-def c_to_kel(c):
-    return c + 273.15
-
-def c_to_faren(c):
-    return c * 9/5 + 32
-
 def execute_length(val, from_, to_):
     convert_to_m = convers["length_to_m"][from_] * val
     convert_to_goal = convers["m_to_length"][to_] * convert_to_m
