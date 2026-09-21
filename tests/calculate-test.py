@@ -122,3 +122,6 @@ def test_34():
 
 def test_35():
     assert calculate("5 % 3 % 2") == Decimal("0")
+
+def test_36():
+    assert calculate("1----5") == Decimal("6")
