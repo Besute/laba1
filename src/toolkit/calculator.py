@@ -13,8 +13,6 @@ PRECISION = CALC_CONFIG["precision"]
 
 HAHAHA_CONST = 998244353
 
-# "!" - IS UNAR MINUS (-5), "?" - IS UNAR PLUS (+5)
-
 def make_operation(first, second, op):
     if op == "*":
         return first * second
