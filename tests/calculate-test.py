@@ -1,6 +1,5 @@
 import pytest
-from toolkit.errors import InvalidExpressionError, InvalidValueError, DivisionByZeroError
-import toolkit
+from toolkit.errors import InvalidExpressionError, DivisionByZeroError
 from toolkit.calculator import calculate
 
 def test_1():
@@ -46,3 +45,43 @@ def test_12():
 def test_13():
     with pytest.raises(InvalidExpressionError):
         calculate("(5 - 4))")
+
+def test_14():
+    assert calculate("2 + 2 * 2 / 2") == 4.0
+
+def test_15():
+    assert calculate("2 / 2 * 2 + 2 - 2") == 2.0
+
+def test_16():
+    assert calculate("2 / (2 + 2)") == 1/2
+
+def test_17():
+    assert calculate("2+ 2 -4") == 0
+
+def test_18():
+    assert calculate("+2+ (+2 + +2)") == 6.0
+
+def test_19():
+    assert calculate("-2-2-2-2") == -8.0
+
+def test_20():
+    assert calculate("0.5 + 1.5 * 0.5 / 0.5") == 2.0
+
+def test_21():
+    assert calculate("3/7") == 3/7
+
+def test_22():
+    assert calculate("3/7 + 5/7") == 8/7
+
+def test_23():
+    assert calculate("0,5 - 0.5") == 0
+
+def test_24():
+    assert calculate("+0 - -0") == 0
+
+def test_25():
+    assert calculate("5.676767 - 0 + 0 --0+(-0)*0") == 5.676767
+
+def test_26():
+    with pytest.raises(DivisionByZeroError):
+        calculate("(5 + 0 - 5 ++4 -5.5 -3 +3.656456465 - 6/7*9*0/12 + 13/5*0) + 14/0")
