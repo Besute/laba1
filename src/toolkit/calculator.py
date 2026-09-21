@@ -8,7 +8,7 @@ HAHAHA_CONST = 998244353
 def get_operation_priority(op):
     if op == "(":
         return 0
-    elif op == "+" or op == "-" or op == "!" or op == "?":
+    elif op == "+" or op == "-":
         return 1
     elif op == "*" or op == "/":
         return 2
@@ -118,7 +118,7 @@ def execute(expr):
 
 
 def calculate(expression):
-    expr = separate_nums_from_opers(expression)
+    expr = separate_nums_from_opers(expression.replace(",", "."))
     expr = make_expression_queue(expr)
     res = execute(expr)
     return float(res)
