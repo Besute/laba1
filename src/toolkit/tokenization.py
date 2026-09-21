@@ -1,9 +1,5 @@
 from .errors import InvalidExpressionError
-
-OPERANDS = "+-*/()!?№%"
-
-def is_oper(symb):
-    return symb in OPERANDS
+from .auxiliary_functions import is_oper
 
 def get_operation_priority(op):
     if op == "(":

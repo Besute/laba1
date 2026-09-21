@@ -3,13 +3,10 @@ from .calculator import calculate
 from .converter import convert
 import json
 from pathlib import Path
+from auxiliary_functions import save_data
 from .errors import InvalidExpressionError, InvalidValueError, DivisionByZeroError
 
-JSON_FILE = Path(__file__).parent / "calculator-config.json"
-
-def save_data(data, path):
-    with open(path, "w") as file:
-        json.dump(data, file, indent=2)
+JSON_FILE = Path(__file__).parent / "calculator_config.json"
 
 def build_parser():
     parser = argparse.ArgumentParser(

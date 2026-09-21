@@ -1,6 +1,5 @@
 from .errors import InvalidExpressionError
-
-REAL_OPERANDS = "+-*/()%"
+from .auxiliary_functions import REAL_OPERANDS
 
 def validation(expression):
     empty_expression = True

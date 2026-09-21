@@ -3,25 +3,17 @@ from .errors import InvalidExpressionError, DivisionByZeroError, InvalidValueErr
 from decimal import *
 from .validation import validation
 from .tokenization import tokenize_expression
-import json
 from pathlib import Path
+from .auxiliary_functions import *
 
-JSON_FILE = Path(__file__).parent / "calculator-config.json"
+JSON_FILE = Path(__file__).parent / "calculator_config.json"
 
-def load_json():
-    with open(JSON_FILE, "r") as file:
-        return json.load(file)
-
-CALC_CONFIG = load_json()
+CALC_CONFIG = load_json(JSON_FILE)
 PRECISION = CALC_CONFIG["precision"]
 
-OPERANDS = "+-*/()!?№%"
 HAHAHA_CONST = 998244353
 
 # "!" - IS UNAR MINUS (-5), "?" - IS UNAR PLUS (+5)
-
-def is_int(num):
-    return int(num) == num
 
 def make_operation(first, second, op):
     if op == "*":
@@ -58,9 +50,6 @@ def make_unar(first, op):
     if op == "?":
         return first
     return HAHAHA_CONST
-
-def is_oper(symb):
-    return symb in OPERANDS
 
 def execute(expr):
     stack = []
