@@ -146,3 +146,7 @@ def test_41():
 
 def test_42():
     assert calculate("123 / 7") == Decimal("123") / Decimal("7")
+
+def test_43():
+    with pytest.raises(InvalidValueError):
+        calculate("5 // 1.5")
