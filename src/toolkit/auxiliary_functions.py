@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-OPERANDS = "+-*/()!?№%" # "!" - IS UNAR MINUS (-5), "?" - IS UNAR PLUS (+5)
+OPERANDS = "+-*/()!?№%" # "!" - IS UNAR MINUS (-5), "?" - IS UNAR PLUS (+5), № - IS "//"
 REAL_OPERANDS = "+-*/()%"
 
 def load_json(JSON_FILE):
