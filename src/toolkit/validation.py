@@ -15,4 +15,4 @@ def validation(expression):
     if not(correct_expression):
         raise InvalidExpressionError("Your expression has unsupported symbols")
     if empty_expression:
-        raise InvalidExpressionError("Your expression is empty")
+        raise InvalidExpressionError("Your expression is empty or doesn't make any sense")

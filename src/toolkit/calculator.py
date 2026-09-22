@@ -66,6 +66,8 @@ def execute(expr):
             stack.append(str(res))
         else:
             stack.append(expr[i])
+    if len(stack) > 1:
+        raise InvalidExpressionError("Probably you have error in your expression")
     return stack[0]
 
 def calculate(expression):
