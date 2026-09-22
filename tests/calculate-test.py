@@ -150,3 +150,6 @@ def test_42():
 def test_43():
     with pytest.raises(InvalidValueError):
         calculate("5 // 1.5")
+
+def test_44():
+    assert calculate("100 --- 10") == Decimal("90")

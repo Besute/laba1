@@ -50,7 +50,7 @@ def make_expression_queue(expression):
         if expression[i] in "(":
             queue.append("(")
         elif is_oper(expression[i]) and expression[i] not in ")":
-            while get_operation_priority(queue[-1]) >= get_operation_priority(expression[i]):
+            while (get_operation_priority(queue[-1]) >= get_operation_priority(expression[i]) and expression[i] not in "!?") or (expression[i] in "!?" and get_operation_priority(queue[-1]) > get_operation_priority(expression[i])):
                 final_expr.append(queue.pop())
             queue.append(expression[i])
         elif expression[i] in ")":
