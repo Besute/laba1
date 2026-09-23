@@ -1,12 +1,15 @@
 import argparse
+from platformdirs import user_data_dir
+import sys
 from .calculator import calculate
 from .converter import convert
 from pathlib import Path
 from .auxiliary_functions import save_data, save_history
 from .errors import InvalidExpressionError, InvalidValueError, DivisionByZeroError
 
-JSON_FILE = Path(__file__).parent / "calculator_config.json"
-JSON_FILE_HISTORY = Path(__file__).parent / "history.json"
+DATA_DIR = Path(user_data_dir("toolkit"))
+JSON_FILE = DATA_DIR / "calculator_config.json"
+JSON_FILE_HISTORY = DATA_DIR / "history.json"
 
 def build_parser():
     parser = argparse.ArgumentParser(
@@ -19,9 +22,9 @@ def build_parser():
     calc_parser.add_argument("value", help="expression", type=str)
 
     convert_parser = subparsers.add_parser("convert", help="convert one measure to another")
-    convert_parser.add_argument("value", help="your initial value of 'from' unit")
-    convert_parser.add_argument("--from", dest="from_unit", required=True, help="from unit")
-    convert_parser.add_argument("--to", dest="to_unit", required=True, help="to unit")
+    convert_parser.add_argument("value", help="your initial value of 'from' unit", type=float)
+    convert_parser.add_argument("--from", dest="from_unit", required=True, help="from unit", type=str)
+    convert_parser.add_argument("--to", dest="to_unit", required=True, help="to unit", type=str)
 
     precision_parser = subparsers.add_parser("setprecision", help="set precision of the calc expression")
     precision_parser.add_argument("value", help="value of precision", type=int)
@@ -29,9 +32,9 @@ def build_parser():
     return parser
 
 
-def main():
+def main(argv=None):
     parser = build_parser()
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     try:
         if args.command == "calc":
             result = calculate(args.value)
@@ -62,14 +65,19 @@ def main():
             }, JSON_FILE)
 
     except InvalidExpressionError as error:
-        print(f"Error: {error}")
+        print(f"Error: {error}", file=sys.stderr)
+        return 1
 
     except InvalidValueError as error:
-        print(f"Error: {error}")
+        print(f"Error: {error}", file=sys.stderr)
+        return 1
 
     except DivisionByZeroError as error:
-        print(f"Error: {error}")
+        print(f"Error: {error}", file=sys.stderr)
+        return 1
+
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
