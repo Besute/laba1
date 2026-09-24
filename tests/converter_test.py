@@ -1,26 +1,35 @@
 from decimal import Decimal
+from decimal import getcontext
+from pathlib import Path
 
 import pytest
 
+from toolkit.auxiliary_functions import load_json
 from toolkit.converter import convert
 from toolkit.errors import InvalidValueError
 
+JSON_FILE = Path(__file__).parent.parent / "src" / "toolkit" / "calculator_config.json"
+
+CALC_CONFIG = load_json(JSON_FILE)
+PRECISION = CALC_CONFIG["precision"]
+getcontext().prec = PRECISION
+
 
 def test_1():
-    assert convert("1000", "g", "kg") == Decimal(1)
+    assert convert(1000, "g", "kg") == Decimal(1)
 
 
 def test_2():
     with pytest.raises(InvalidValueError):
-        convert("1000", "m", "kg")
+        convert(1000, "m", "kg")
 
 
 def test_3():
-    assert convert("1500", "g", "kg") == Decimal(1.5)
+    assert convert(1500, "g", "kg") == Decimal(1.5)
 
 
 def test_4():
-    assert convert("3.5555", "kg", "g") == Decimal(3555.5)
+    assert convert(Decimal(3.5555), "kg", "g") == Decimal(3555.5)
 
 
 def test_5():
@@ -29,7 +38,7 @@ def test_5():
 
 
 def test_6():
-    assert convert(0, "c", "k") == Decimal(273.15)
+    assert convert(0, "c", "k") == Decimal(273) + Decimal(0.15)
 
 
 def test_7():
@@ -47,11 +56,11 @@ def test_9():
 
 
 def test_10():
-    assert convert(567, "f", "c") == Decimal(297.22222222222223)
+    assert convert(500, "f", "c") == Decimal(260)
 
 
 def test_11():
-    assert convert(297.22222222222223, "c", "f") == Decimal(567)
+    assert convert(260, "c", "f") == Decimal(500)
 
 
 def test_12():

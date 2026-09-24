@@ -22,7 +22,7 @@ def test_convert_success(capsys, monkeypatch):
     captured = capsys.readouterr()
 
     assert exit_code == 0
-    assert captured.out == "The 1.0m is 100cm\n"
+    assert captured.out == "The 1m is 100cm\n"
 
 
 def test_convert_success_2(capsys, monkeypatch):
