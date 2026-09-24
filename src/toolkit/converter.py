@@ -1,31 +1,39 @@
 import decimal
 import json
+
 from pathlib import Path
+
 from .errors import InvalidValueError
 
 JSON_FILE = Path(__file__).parent / "converts.json"
 LENGTH_TO_M = {}
 
+
 def load_conversions():
     with open(JSON_FILE, "r") as file:
         return json.load(file)
 
-convers =  load_conversions()
+
+convers = load_conversions()
+
 
 def execute_length(val, from_, to_):
     convert_to_m = convers["length_to_m"][from_] * val
     convert_to_goal = convers["m_to_length"][to_] * convert_to_m
     return convert_to_goal
 
+
 def execute_mass(val, from_, to_):
     convert_to_g = convers["mass_to_g"][from_] * val
     convert_to_goal = convers["g_to_mass"][to_] * convert_to_g
     return convert_to_goal
 
+
 def execute_temper(val, from_, to_):
     convert_to_c = convers[from_]["c"]["mult"] * val + convers[from_]["c"]["offset"]
     convert_to_goal = convers["c"][to_]["mult"] * convert_to_c + convers["c"][to_]["offset"]
     return convert_to_goal
+
 
 def evaluate_from(val, from_, to_):
     if from_ in ["km", "m", "cm", "mm"] and to_ in ["km", "m", "cm", "mm"]:
@@ -43,6 +51,7 @@ def evaluate_from(val, from_, to_):
             raise InvalidValueError("You have temperature below absolute zero")
         return decimal.Decimal(total_temp)
     raise InvalidValueError(f"You can't convert {from_} to {to_}")
+
 
 def convert(val, from_, to_):
     return evaluate_from(val, from_, to_)

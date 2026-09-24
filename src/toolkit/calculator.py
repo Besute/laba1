@@ -1,10 +1,16 @@
 import decimal
-from .errors import InvalidExpressionError, DivisionByZeroError, InvalidValueError
-from decimal import *
-from .validation import validation
-from .tokenization import tokenize_expression
+
+from decimal import getcontext
 from pathlib import Path
-from .auxiliary_functions import *
+
+from .auxiliary_functions import is_int
+from .auxiliary_functions import is_oper
+from .auxiliary_functions import load_json
+from .errors import DivisionByZeroError
+from .errors import InvalidExpressionError
+from .errors import InvalidValueError
+from .tokenization import tokenize_expression
+from .validation import validation
 
 JSON_FILE = Path(__file__).parent / "calculator_config.json"
 
@@ -12,6 +18,7 @@ CALC_CONFIG = load_json(JSON_FILE)
 PRECISION = CALC_CONFIG["precision"]
 
 HAHAHA_CONST = 998244353
+
 
 def make_operation(first, second, op):
     if op == "*":
@@ -42,12 +49,14 @@ def make_operation(first, second, op):
             raise InvalidValueError("You can't divide evenly float number ")
     return HAHAHA_CONST
 
+
 def make_unar(first, op):
     if op == "!":
         return -1 * first
     if op == "?":
         return first
     return HAHAHA_CONST
+
 
 def execute(expr):
     stack = []
@@ -69,6 +78,7 @@ def execute(expr):
     if len(stack) > 1:
         raise InvalidExpressionError("Probably you have error in your expression")
     return stack[0]
+
 
 def calculate(expression):
     getcontext().prec = PRECISION

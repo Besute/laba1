@@ -1,5 +1,7 @@
 from toolkit.__main__ import main
-from toolkit.errors import InvalidExpressionError, DivisionByZeroError
+from toolkit.errors import DivisionByZeroError
+from toolkit.errors import InvalidExpressionError
+
 
 def test_calc_success(capsys, monkeypatch):
     monkeypatch.setattr(
@@ -10,6 +12,7 @@ def test_calc_success(capsys, monkeypatch):
 
     assert res == 0
     assert "Result of your expression: 4\n"
+
 
 def test_calc_unsuccess(capsys, monkeypatch):
     def fake_calculate(expression):
@@ -24,6 +27,7 @@ def test_calc_unsuccess(capsys, monkeypatch):
     assert res == 1
     assert "Probably you have error in your expression"
 
+
 def test_calc_unsuccess_zero_div(capsys, monkeypatch):
     def fake_calculate(expression):
         raise DivisionByZeroError("You devised by zero")
@@ -37,6 +41,7 @@ def test_calc_unsuccess_zero_div(capsys, monkeypatch):
     assert res == 1
     assert "You devised by zero"
 
+
 def test_calc_success_one(capsys, monkeypatch):
     monkeypatch.setattr(
         "toolkit.__main__.calculate",
@@ -46,6 +51,7 @@ def test_calc_success_one(capsys, monkeypatch):
 
     assert res == 0
     assert "Result of your expression: 15\n"
+
 
 def test_success_validation_error(capsys, monkeypatch):
     def fake_calculate(expression):

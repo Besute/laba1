@@ -1,5 +1,6 @@
-from .errors import InvalidExpressionError
 from .auxiliary_functions import REAL_OPERANDS
+from .errors import InvalidExpressionError
+
 
 def validation(expression):
     empty_expression = True
@@ -12,7 +13,7 @@ def validation(expression):
         if i not in REAL_OPERANDS and i not in "0123456789 .,":
             correct_expression = False
             break
-    if not(correct_expression):
+    if not (correct_expression):
         raise InvalidExpressionError("Your expression has unsupported symbols")
     if empty_expression:
         raise InvalidExpressionError("Your expression is empty or doesn't make any sense")

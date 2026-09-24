@@ -1,20 +1,27 @@
 import argparse
-from platformdirs import user_data_dir
 import sys
+
+from pathlib import Path
+
+from platformdirs import user_data_dir
+
+from .auxiliary_functions import save_data
+from .auxiliary_functions import save_history
 from .calculator import calculate
 from .converter import convert
-from pathlib import Path
-from .auxiliary_functions import save_data, save_history
-from .errors import InvalidExpressionError, InvalidValueError, DivisionByZeroError
+from .errors import DivisionByZeroError
+from .errors import InvalidExpressionError
+from .errors import InvalidValueError
 
 DATA_DIR = Path(user_data_dir("toolkit"))
 JSON_FILE = DATA_DIR / "calculator_config.json"
 JSON_FILE_HISTORY = DATA_DIR / "history.json"
 
+
 def build_parser():
     parser = argparse.ArgumentParser(
         prog="toolkit",
-        description="This program calculates the result of a given expression or convert one measure to another"
+        description="This program calculates the result of a given expression or convert one measure to another",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -38,31 +45,43 @@ def main(argv=None):
     try:
         if args.command == "calc":
             result = calculate(args.value)
-            save_history({
-                "operation": "calculation",
-                "result": str(result),
-                "expression": args.value,
-            }, JSON_FILE_HISTORY)
+            save_history(
+                {
+                    "operation": "calculation",
+                    "result": str(result),
+                    "expression": args.value,
+                },
+                JSON_FILE_HISTORY,
+            )
             print("Result of your expression:", result)
         elif args.command == "convert":
             result = convert(args.value, args.from_unit, args.to_unit)
-            save_history({
-                "operation": "convertion",
-                "result": str(result),
-                "value": args.value,
-                "from": args.from_unit,
-                "to": args.to_unit
-            }, JSON_FILE_HISTORY)
+            save_history(
+                {
+                    "operation": "convertion",
+                    "result": str(result),
+                    "value": args.value,
+                    "from": args.from_unit,
+                    "to": args.to_unit,
+                },
+                JSON_FILE_HISTORY,
+            )
             print(f"The {args.value}{args.from_unit} is {result}{args.to_unit}")
         elif args.command == "setprecision":
             print(f"You set your current precision to {args.value}")
-            save_history({
-                "operation": "setprecision",
-                "to": args.value,
-            }, JSON_FILE_HISTORY)
-            save_data({
-                "precision": args.value,
-            }, JSON_FILE)
+            save_history(
+                {
+                    "operation": "setprecision",
+                    "to": args.value,
+                },
+                JSON_FILE_HISTORY,
+            )
+            save_data(
+                {
+                    "precision": args.value,
+                },
+                JSON_FILE,
+            )
 
     except InvalidExpressionError as error:
         print(f"Error: {error}", file=sys.stderr)

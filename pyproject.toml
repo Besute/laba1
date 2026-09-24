@@ -1,25 +1,60 @@
-[project]
-name = "Python-calculator"
-version = "0.1.0"
-description = "Calculator and converter written on python"
-readme = "README.md"
-requires-python = ">=3.11"
-license = { text = "MIT" }
-authors = [
-    { name = "Борис Бутко", email = "boris200723@gmail.com" }
-]
-
-[tool.pytest.ini_options]
-testpaths = [
-    "tests/",
-]
-
 [tool.poetry]
-packages = [{ include = "toolkit", from = "src" }]
+name = "study"
+version = "1.0.0"
+packages = [{include = "toolkit", from = "src"}]
 
-[dependency-groups]
-dev = [
-    "black==26.5.1",
-    "isort==5.13.2",
-    "pytest (>=9.1.1,<10.0.0)"
-]
+[tool.poetry.dependencies]
+python = "^3.13"
+typer="^0.20.0"
+huggingface-hub="^1.1.4"
+pydantic = "^2.12.5"
+python-dotenv = "^1.1.1"
+pytest-dependency = "^0.6.0"
+allure-pytest = "^2.15.2"
+tenacity = "^9.0.0"
+python-linq = "^2.0.4"
+beautifulsoup4 = "^4.14.3"
+assertpy = "^1.1"
+loguru="^0.7.3"
+pytest = "^9.1.1"
+platformdirs = "^4.11.12"
+
+
+
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^2.20.0"
+black = "^22.10.0"
+ruff="^0.1.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.black]
+line-length = 120
+target-version = ['py313']
+
+
+[tool.ruff]
+fix = false
+target-version = "py313"
+line-length = 120
+
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = 120
+
+
+[tool.ruff.lint.isort]
+case-sensitive = true
+force-single-line=true
+lines-between-types = 1
+no-sections = false
+
+
+
