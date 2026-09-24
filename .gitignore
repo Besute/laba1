@@ -1,3 +1,7 @@
 poetry.lock
 src/toolkit/history.json
 idea
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
