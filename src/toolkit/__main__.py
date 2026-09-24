@@ -1,6 +1,7 @@
 import argparse
 import sys
 
+from decimal import Decimal
 from pathlib import Path
 
 from .auxiliary_functions import save_data
@@ -27,7 +28,7 @@ def build_parser():
     calc_parser.add_argument("value", help="expression", type=str)
 
     convert_parser = subparsers.add_parser("convert", help="convert one measure to another")
-    convert_parser.add_argument("value", help="your initial value of 'from' unit", type=float)
+    convert_parser.add_argument("value", help="your initial value of 'from' unit", type=Decimal)
     convert_parser.add_argument("--from", dest="from_unit", required=True, help="from unit", type=str)
     convert_parser.add_argument("--to", dest="to_unit", required=True, help="to unit", type=str)
 
@@ -58,7 +59,7 @@ def main(argv=None):
                 {
                     "operation": "convertion",
                     "result": str(result),
-                    "value": args.value,
+                    "value": str(args.value),
                     "from": args.from_unit,
                     "to": args.to_unit,
                 },
