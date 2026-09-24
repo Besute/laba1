@@ -7,4 +7,5 @@ However, if there is/are mistake(s), the calculator will tell you
 2) python -m toolkit convert VALUE --from MEASURE --to MEASURE - runs converter from one measure
 to another. There are several converts: KG, G (mass); MM, CM, M, KM (length); 
 F, C, K (temperature)
-3) python -m toolkit --help - run to see helpful guide with calculator
+3) python -m toolkit setprecision VALUE - set precision of decimal
+4) python -m toolkit --help - run to see helpful guide with calculator
