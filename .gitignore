@@ -1,2 +1,2 @@
-poetry.lock
+./poetry.lock
 src/toolkit/history.json
