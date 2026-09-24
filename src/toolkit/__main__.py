@@ -12,7 +12,7 @@ from .errors import DivisionByZeroError
 from .errors import InvalidExpressionError
 from .errors import InvalidValueError
 
-DATA_DIR = Path(__file__).resolve().parent.parent.parent
+DATA_DIR = Path(__file__).resolve().parent
 JSON_FILE = DATA_DIR / "calculator_config.json"
 JSON_FILE_HISTORY = DATA_DIR / "history.json"
 

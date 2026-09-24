@@ -2,6 +2,9 @@
 name = "toolkit"
 version = "1.0.1"
 packages = [{ include = "toolkit", from = "src" }]
+include = [
+    { path = "src/toolkit/*.json", format = ["sdist", "wheel"] }
+]
 
 [tool.poetry.dependencies]
 python = "^3.14"
