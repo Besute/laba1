@@ -3,8 +3,6 @@ import sys
 
 from pathlib import Path
 
-from platformdirs import user_data_dir
-
 from .auxiliary_functions import save_data
 from .auxiliary_functions import save_history
 from .calculator import calculate
@@ -13,7 +11,7 @@ from .errors import DivisionByZeroError
 from .errors import InvalidExpressionError
 from .errors import InvalidValueError
 
-DATA_DIR = Path(user_data_dir("toolkit"))
+DATA_DIR = Path(__file__).resolve().parent
 JSON_FILE = DATA_DIR / "calculator_config.json"
 JSON_FILE_HISTORY = DATA_DIR / "history.json"
 
