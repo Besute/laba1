@@ -1,6 +1,6 @@
 poetry.lock
 src/toolkit/history.json
-idea
+.idea
 
 __pycache__/
 *.py[cod]
