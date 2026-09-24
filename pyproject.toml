@@ -1,11 +1,10 @@
 [tool.poetry]
-name = "study"
-version = "1.0.0"
-
-package-mode = false
+name = "toolkit"
+version = "1.0.1"
+packages = [{ include = "toolkit", from = "src" }]
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = "^3.14"
 typer="^0.20.0"
 huggingface-hub="^1.1.4"
 pydantic = "^2.12.5"
@@ -36,12 +35,12 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 120
-target-version = ['py313']
+target-version = ['py314']
 
 
 [tool.ruff]
 fix = false
-target-version = "py313"
+target-version = "py314"
 line-length = 120
 
 
